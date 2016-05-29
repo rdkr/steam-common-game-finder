@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>common steam games finder</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+<body>
+
+<div class="container">
+
+  <h1>common steam games finder</h1><hr>
+
+  <form role="form" action="/submit">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="comma separeted steamid64s / vanity urls" {% if requested_ids %} value="{{ requested_ids.replace(',', ', ') }}" {% endif %} name="ids">
+      <span class="input-group-btn">     
+        <button type="submit" class="btn btn-default">Submit</button>
+      </span>
+    </div>
+  </form>
+
+    {% if valid_steam_users or invalid_steam_users or restricted_steam_users%}
+
+    <hr>
+
+    <ul class="list-group">
+      {% if valid_steam_users %}
+        {% for user in valid_steam_users  %}
+          <li class="list-group-item list-group-item-success">{{ user }}</li>
+        {% endfor %}
+      {% endif %}
+
+      {% if restricted_steam_users %}
+        {% for user in restricted_steam_users  %}
+          <li class="list-group-item list-group-item-warning">{{ user }}</li>
+        {% endfor %}
+      {% endif %}
+
+      {% if invalid_steam_users %}
+        {% for user in invalid_steam_users  %}
+          <li class="list-group-item list-group-item-danger">{{ user }}</li>
+        {% endfor %}
+      {% endif %}
+
+    </ul>
+    
+    <hr>
+
+  {% endif %}
+
+  {% if games %}
+
+    <ul class="list-group">
+      {% for game in games  %}
+        <li  class="list-group-item">{{ game }}</li>
+      {% endfor %}
+    </ul>
+
+  {% endif %}
+</div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  
+</body>
+</html>
