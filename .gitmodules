@@ -1,3 +1,3 @@
 [submodule "steamapi"]
 	path = steamapi
-	url = git@github.com:rdkr/steamapi.git
+	url = git@github.com:smiley/steamapi.git
