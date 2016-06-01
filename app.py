@@ -14,10 +14,12 @@ def submit():
     restricted_steam_users = []
     invalid_steam_users = []
 
-    # get submitted id and check they are valid
-
+    # if no ids are proivided in GET request, return the index page
     if request.args.get('ids', '') == '':
         return render_template('index.html')
+
+    # attempt to create SteamUser objects for each provided id. if succesful,
+    # check the games list is not private
 
     for submitted_id in request.args.get('ids', '').replace(' ', '').split(','):
         if len(submitted_id) is 0:
@@ -40,7 +42,7 @@ def submit():
             except (ValueError, errors.UserNotFoundError):
                 invalid_steam_users.append(submitted_id)
 
-    # if no valid ids, return with list of invalid ids
+    # if no valid ids, return index with list of invalid / restricted ids
 
     if not valid_steam_users:
         return render_template('index.html',
@@ -50,7 +52,7 @@ def submit():
                                invalid_steam_users=invalid_steam_users
                                )
 
-    # create a list of the set of game ids each user owns
+    # create a list of the set of game ids each valid user owns
 
     valid_steam_users_game_ids_set_list = []
 
@@ -63,7 +65,7 @@ def submit():
     common_games_game_id_set = set.intersection(
         *valid_steam_users_game_ids_set_list)
 
-    # ####
+    # create a dictionary with user as key and a dictionary of their play time in each common game as value
 
     common_games_playtimes_dict = {}
 
@@ -74,6 +76,8 @@ def submit():
                 steam_user_common_games[game._id] = game.playtime_forever
         common_games_playtimes_dict[steam_user._id] = steam_user_common_games
 
+    # create a dictionary containing the average play time across players for each game
+
     common_games_average_playtime = {}
 
     for game_id in common_games_game_id_set:
@@ -82,6 +86,8 @@ def submit():
             common_games_average_playtime[
                 game_id] += common_games_playtimes_dict[steam_user][game_id] / len(valid_steam_users)
 
+    # sort a list of common games according to the average play time of each game
+
     common_games = []
 
     for game_id in sorted(common_games_average_playtime, key=common_games_average_playtime.get, reverse=True):
@@ -89,6 +95,8 @@ def submit():
             if game_id == game._id:
                 common_games.append(game)
                 break
+
+    # return the results
 
     return render_template('index.html',
                            requested_ids=request.args.get(
@@ -104,4 +112,4 @@ def submit():
 def index():
     return render_template('index.html')
 
-app.run(debug=True, host="0.0.0.0", port=8000)
+app.run(debug=True, host="0.0.0.0", port=8232)
