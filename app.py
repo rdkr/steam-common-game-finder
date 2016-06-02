@@ -65,7 +65,8 @@ def submit():
     common_games_game_id_set = set.intersection(
         *valid_steam_users_game_ids_set_list)
 
-    # create a dictionary with user as key and a dictionary of their play time in each common game as value
+    # create a dictionary with user as key and a dictionary of their play time
+    # in each common game as value
 
     common_games_playtimes_dict = {}
 
@@ -76,7 +77,8 @@ def submit():
                 steam_user_common_games[game._id] = game.playtime_forever
         common_games_playtimes_dict[steam_user._id] = steam_user_common_games
 
-    # create a dictionary containing the average play time across players for each game
+    # create a dictionary containing the average play time across players for
+    # each game
 
     common_games_average_playtime = {}
 
@@ -86,7 +88,8 @@ def submit():
             common_games_average_playtime[
                 game_id] += common_games_playtimes_dict[steam_user][game_id] / len(valid_steam_users)
 
-    # sort a list of common games according to the average play time of each game
+    # sort a list of common games according to the average play time of each
+    # game
 
     common_games = []
 
@@ -112,4 +115,6 @@ def submit():
 def index():
     return render_template('index.html')
 
-app.run(debug=True, host="0.0.0.0", port=8232)
+
+if __name__ == '__main__':
+    app.run(debug=True, host="0.0.0.0", port=8232)
