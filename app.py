@@ -7,7 +7,7 @@ core.APIConnection(api_key=os.environ['STEAM_WEB_API_KEY'])
 application = Flask(__name__)
 
 
-@app.route('/submit', methods=['GET'])
+@application.route('/submit', methods=['GET'])
 def submit():
 
     valid_steam_users = []
@@ -111,7 +111,7 @@ def submit():
                            )
 
 
-@app.route("/")
+@application.route("/")
 def index():
     return render_template('index.html')
 
