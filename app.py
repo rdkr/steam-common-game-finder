@@ -4,7 +4,7 @@ from steamapi.steamapi import core, user, errors
 
 core.APIConnection(api_key=os.environ['STEAM_WEB_API_KEY'])
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 
 @app.route('/submit', methods=['GET'])
@@ -117,4 +117,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=8232)
+    application.run(debug=True, host="0.0.0.0", port=8232)
