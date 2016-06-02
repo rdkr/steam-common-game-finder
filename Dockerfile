@@ -8,4 +8,6 @@ RUN pip3 install -r requirements.txt
 
 RUN pip3 install uwsgi
 
-CMD uwsgi --master --http 0.0.0.0:3031 --manage-script-name --mount /=app:app
+EXPOSE 3031
+
+CMD uwsgi --master --socket 0.0.0.0:3031 --wsgi-file app.py
